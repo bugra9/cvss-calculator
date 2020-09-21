@@ -52,7 +52,7 @@ import Cvss from 'cvss-calculator';
 const cvss = new Cvss("Cvss Vector ...");
 const baseScore = cvss.getBaseScore();
 ```
-> Example: https://github.com/bugra9/cvss-calculator/blob/master/examples/node/index.js
+> Example: https://github.com/bugra9/cvss-calculator/blob/master/examples/node.js/index.js
 
 ## Usage
 ```js
