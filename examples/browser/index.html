@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Cvss Calculator</title>
+    <style>
+        p {
+            font-weight: bold;
+        }
+        span {
+            font-weight: normal;
+        }
+        input {
+            width: 800px;
+        }
+    </style>
+</head>
+<body>
+    <input type="text" oninput="calc(this.value)" value="CVSS:3.1/AV:P/AC:H/PR:H/UI:R/S:C/C:H/I:H/A:H/E:U/RL:O/RC:C/CR:H/IR:H/AR:H/MAV:P/MAC:H/MPR:H/MUI:N/MS:C/MC:H/MI:H/MA:H" />
+    <p>Base Score: <span id="base"></span></p>
+    <p>Rating: <span id="rating"></span></p>
+    <p>Impact Score: <span id="impact"></span></p>
+    <p>Exploitability Score: <span id="exploitability"></span></p>
+    <p>Temporal Score: <span id="temporal"></span></p>
+    <p>Environmental Score: <span id="environmental"></span></p>
+    <script src="../../dist/cvss.js"></script>
+    <script>
+        function calc(cvssVector) {
+            const c = new Cvss(cvssVector);
+            document.querySelector("#base").innerText = c.getBaseScore();
+            document.querySelector("#rating").innerText = c.getRating();
+            document.querySelector("#impact").innerText = c.getImpactScore();
+            document.querySelector("#exploitability").innerText = c.getExploitabilityScore();
+            document.querySelector("#temporal").innerText = c.getTemporalScore();
+            document.querySelector("#environmental").innerText = c.getEnvironmentalScore();
+        }
+        calc('CVSS:3.1/AV:P/AC:H/PR:H/UI:R/S:C/C:H/I:H/A:H/E:U/RL:O/RC:C/CR:H/IR:H/AR:H/MAV:P/MAC:H/MPR:H/MUI:N/MS:C/MC:H/MI:H/MA:H');
+    </script>
+</body>
+</html>
