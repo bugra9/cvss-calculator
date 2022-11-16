@@ -138,8 +138,9 @@ metric['Availability Requirement'] = {
     'Low': 0.5,
 };
 
-metric.get = function(key, cvssObject) {
-    if (!cvssObject[key]) return Object.values(this[key])[0];
+metric.get = function(key, cvssObject, altKey) {
+    if (!cvssObject[key] || cvssObject[key] === 'Not Defined')
+        return baseKey ? this[key][cvssObject[baseKey]] : Object.values(this[key])[0];
     const value = this[key][cvssObject[key]];
     return typeof value === "function" ? value(cvssObject) : value;
 };
@@ -201,17 +202,17 @@ class Cvss30 {
     getEnvironmentalScore() {
         let environmentalScore = 0;
         const ISCmodified = Math.min(1 - (
-            (1 - metric.get('Modified Confidentiality', this.cvss) * metric.get('Confidentiality Requirement', this.cvss)) *
-            (1 - metric.get('Modified Integrity', this.cvss) * metric.get('Integrity Requirement', this.cvss)) *
-            (1 - metric.get('Modified Availability', this.cvss) * metric.get('Availability Requirement', this.cvss))
+            (1 - metric.get('Modified Confidentiality', this.cvss, 'Confidentiality') * metric.get('Confidentiality Requirement', this.cvss)) *
+            (1 - metric.get('Modified Integrity',  this.cvss, 'Integrity') * metric.get('Integrity Requirement', this.cvss)) *
+            (1 - metric.get('Modified Availability', this.cvss, 'Availability') * metric.get('Availability Requirement', this.cvss))
         ), 0.915);
-        const mISC = this.cvss['Modified Scope'] === 'Changed' ? 7.52 * (ISCmodified - 0.029) - 3.25 * Math.pow(ISCmodified-0.02, 15) : 6.42 * ISCmodified;
+        const mISC = this.cvss['Modified Scope'] === 'Changed' ? 7.52 * (ISCmodified - 0.029) - 3.25 * Math.pow(ISCmodified * 0.9731 - 0.02, 13) : 6.42 * ISCmodified;
         const mESC = (
             8.22 *
-            metric.get('Modified Attack Vector', this.cvss) *
-            metric.get('Modified Attack Complexity', this.cvss) *
-            metric.get('Modified Privilege Required', this.cvss) *
-            metric.get('Modified User Interaction', this.cvss)
+            metric.get('Modified Attack Vector',  this.cvss, 'Attack Vector') *
+            metric.get('Modified Attack Complexity', this.cvss, 'Attack Complexity') *
+            metric.get('Modified Privilege Required', this.cvss, 'Privilege Required') *
+            metric.get('Modified User Interaction', this.cvss, 'User Interaction')
         );
 
         if (mISC > 0) {
