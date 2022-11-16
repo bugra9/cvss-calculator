@@ -2,7 +2,7 @@
   "name": "cvss-calculator",
   "version": "1.0.0",
   "description": "Common Vulnerability Scoring System Calculator for v3.1, v3.0, v2.0, v1.0",
-  "main": "dist/cvss.js",
+  "main": "../frontend/src/assets/scripts/cvss.js",
   "homepage": "https://github.com/bugra9/cvss-calculator",
   "repository": "git@github.com:bugra9/cvss-calculator.git",
   "author": "Bugra <bugra@trylab.net>",
@@ -10,7 +10,7 @@
   "private": false,
   "scripts": {
     "lint": "eslint .",
-    "build": "webpack src/cvss.js -o dist/cvss.js"
+    "build": "webpack src/cvss.js -o ../frontend/src/assets/scripts/cvss.js"
   },
   "devDependencies": {
       "@babel/core": "^7.9.6",

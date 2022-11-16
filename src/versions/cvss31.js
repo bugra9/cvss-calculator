@@ -140,7 +140,7 @@ metric['Availability Requirement'] = {
 
 metric.get = function(key, cvssObject, altKey) {
     if (!cvssObject[key] || cvssObject[key] === 'Not Defined')
-        return baseKey ? this[key][cvssObject[baseKey]] : Object.values(this[key])[0];
+        return altKey ? this[key][cvssObject[altKey]] : Object.values(this[key])[0];
     const value = this[key][cvssObject[key]];
     return typeof value === "function" ? value(cvssObject) : value;
 };

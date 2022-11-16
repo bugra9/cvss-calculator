@@ -1,4 +1,4 @@
-import '../../dist/cvss.js';
+import '../../../frontend/src/assets/scripts/cvss.js';
 
 function calc(cvssVector) {
     const c = new Cvss(cvssVector);
