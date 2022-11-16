@@ -203,13 +203,13 @@ class Cvss30 {
         let environmentalScore = 0;
         const ISCmodified = Math.min(1 - (
             (1 - metric.get('Modified Confidentiality', this.cvss, 'Confidentiality') * metric.get('Confidentiality Requirement', this.cvss)) *
-            (1 - metric.get('Modified Integrity',  this.cvss, 'Integrity') * metric.get('Integrity Requirement', this.cvss)) *
+            (1 - metric.get('Modified Integrity', this.cvss, 'Integrity') * metric.get('Integrity Requirement', this.cvss)) *
             (1 - metric.get('Modified Availability', this.cvss, 'Availability') * metric.get('Availability Requirement', this.cvss))
         ), 0.915);
         const mISC = this.cvss['Modified Scope'] === 'Changed' ? 7.52 * (ISCmodified - 0.029) - 3.25 * Math.pow(ISCmodified * 0.9731 - 0.02, 13) : 6.42 * ISCmodified;
         const mESC = (
             8.22 *
-            metric.get('Modified Attack Vector',  this.cvss, 'Attack Vector') *
+            metric.get('Modified Attack Vector', this.cvss, 'Attack Vector') *
             metric.get('Modified Attack Complexity', this.cvss, 'Attack Complexity') *
             metric.get('Modified Privilege Required', this.cvss, 'Privilege Required') *
             metric.get('Modified User Interaction', this.cvss, 'User Interaction')
