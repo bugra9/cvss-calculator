@@ -15,15 +15,20 @@ class Cvss {
     constructor(cvssString, cvssClass) {
         this.cvssString = cvssString;
         this.cvssMap = parseCvssVector(cvssString, cvssClass, cvssClasses);
-        this.cvssClass = cvssClass || cvssClasses[this.cvssMap.short.CVSS];
-        this.obj = new this.cvssClass(this.cvssMap.long);
+        if (this.cvssMap) {
+            this.cvssClass = cvssClass || cvssClasses[this.cvssMap.short.CVSS];
+            this.obj = new this.cvssClass(this.cvssMap.long);
+            this.valid = true;
+        }
+        else
+            this.valid = false;
     }
 
-    getImpactScore() { return roundUp(this.obj.getImpactScore()); }
-    getExploitabilityScore() { return roundUp(this.obj.getExploitabilityScore()); }
-    getBaseScore() { return roundUp(this.obj.getBaseScore()); }
-    getTemporalScore() { return roundUp(this.obj.getTemporalScore()); }
-    getEnvironmentalScore() { return roundUp(this.obj.getEnvironmentalScore()); }
+    getImpactScore() { return this.valid ? roundUp(this.obj.getImpactScore()) : 0; }
+    getExploitabilityScore() { return this.valid ? roundUp(this.obj.getExploitabilityScore()) : 0; }
+    getBaseScore() { return this.valid ? roundUp(this.obj.getBaseScore()) : 0; }
+    getTemporalScore() { return this.valid ? roundUp(this.obj.getTemporalScore()) : 0; }
+    getEnvironmentalScore() { return this.valid ? roundUp(this.obj.getEnvironmentalScore()) : 0; }
     getRating() {
         const baseScore = this.getBaseScore();
         if (baseScore === 0) return 'None';

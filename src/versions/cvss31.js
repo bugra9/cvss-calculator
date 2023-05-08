@@ -57,8 +57,8 @@ metric['Privilege Required'] = {
 };
 metric['Modified Privilege Required'] = {
     'None': 0.85,
-    'Low': (cvss) => cvss['Modified Scope'] === 'Changed' ? 0.68 : 0.62,
-    'High': (cvss) => cvss['Modified Scope'] === 'Changed' ? 0.50 : 0.27,
+    'Low': (cvss) => (cvss['Modified Scope'] !== undefined ? cvss['Modified Scope'] : cvss['Scope']) === 'Changed' ? 0.68 : 0.62,
+    'High': (cvss) => (cvss['Modified Scope'] !== undefined ? cvss['Modified Scope'] : cvss['Scope']) ? 0.50 : 0.27,
 };
 
 metric['User Interaction'] = {
@@ -208,7 +208,7 @@ class Cvss31 {
             (1 - metric.get('Modified Integrity', this.cvss, 'Integrity') * metric.get('Integrity Requirement', this.cvss)) *
             (1 - metric.get('Modified Availability', this.cvss, 'Availability') * metric.get('Availability Requirement', this.cvss))
         ), 0.915);
-        const mISC = this.cvss['Modified Scope'] === 'Changed' ? 7.52 * (ISCmodified - 0.029) - 3.25 * Math.pow(ISCmodified * 0.9731 - 0.02, 13) : 6.42 * ISCmodified;
+        const mISC = (this.cvss['Modified Scope'] !== undefined ? this.cvss['Modified Scope'] : this.cvss['Scope']) === 'Changed' ? 7.52 * (ISCmodified - 0.029) - 3.25 * Math.pow(ISCmodified * 0.9731 - 0.02, 13) : 6.42 * ISCmodified;
         const mESC = (
             8.22 *
             metric.get('Modified Attack Vector', this.cvss, 'Attack Vector') *
@@ -218,7 +218,7 @@ class Cvss31 {
         );
 
         if (mISC > 0) {
-            if (this.cvss['Modified Scope'] === 'Changed')
+            if ((this.cvss['Modified Scope'] !== undefined ? this.cvss['Modified Scope'] : this.cvss['Scope']) === 'Changed')
                 environmentalScore = (
                     roundUp(Math.min(1.08 * (mISC + mESC), 10)) *
                     metric.get('Exploit Code Maturity', this.cvss) *
