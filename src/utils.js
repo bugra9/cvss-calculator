@@ -48,6 +48,11 @@ function detectCvssVersion(cvssVectorObject) {
 }
 
 function parseCvssVector(vector, cvssClass, cvssClasses) {
+    const regex = /^(CVSS:\d\.\d\/)?(AV:[NALP]\/AC:[LH]\/PR:[NLH]\/UI:[NR]\/S:[UC]\/C:[NLH]\/I:[NLH]\/A:[NLH])(\/E:[XUPFH]\/RL:[XOTWU]\/RC:[XURC]\/CR:[XMLH]\/IR:[XLMH]\/AR:[XLMH]\/MAV:[XNALP]\/MAC:[XLH]\/MPR:[XNLH]\/MUI:[XNR]\/MS:[XUC]\/MC:[XNLH]\/MI:[XNLH]\/MA:[XNLH])?$/gm;
+
+    if (!regex.exec(vector))
+        return undefined;
+
     const output = { short: {}, long: {}};
     output.short = splitCvssVector(vector);
     if (!output.short.CVSS) output.short.CVSS = detectCvssVersion(output.short);
